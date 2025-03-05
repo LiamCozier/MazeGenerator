@@ -21,7 +21,6 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.1f, 0.1f, 0.12f, 1f);
         world.draw_screen(sr);
     }
 
