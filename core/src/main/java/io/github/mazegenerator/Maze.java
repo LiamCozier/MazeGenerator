@@ -12,20 +12,24 @@ public class Maze {
         this.width = width;
         this.height = height;
 
-        cell_array = init_cell_array();
+        cell_array = generate();
     }
 
-    private MazeCell[][] init_cell_array() {
-        cell_array = new MazeCell[width][height];
-        int id = 1;
-        int i, j;
-        for (i=0; i<width; i++) {
-            for (j=0; j<height; j++) {
-                cell_array[i][j] = new MazeCell(true, true, id);
-                id++;
+    public MazeCell[][] generate() {
+        MazeGenerator mg = new MazeGenerator(width, height);
+        mg.recursive_backtrack(new Vector2(1, 1));
+
+        return mg.cell_array;
+    }
+
+    public void print() {
+        for (MazeCell[] i: cell_array) {
+            System.out.print("\n|");
+            for (MazeCell j: i) {
+                System.out.print((j.south_wall ? "_" : " "));
+                System.out.print((j.east_wall ? "|" : " "));
             }
         }
-        return cell_array;
     }
 
 

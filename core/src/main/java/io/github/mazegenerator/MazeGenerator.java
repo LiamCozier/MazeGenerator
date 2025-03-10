@@ -1,12 +1,14 @@
 package io.github.mazegenerator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class MazeGenerator {
     private final int width;
     private final int height;
-    private MazeCell[][] cell_array;
+    public MazeCell[][] cell_array;
     List<Integer> visited_cell_ids;
 
 
@@ -30,44 +32,46 @@ public class MazeGenerator {
         return cell_array;
     }
 
-    private void recursive_backtrack(Vector2 pos) {
+    public void recursive_backtrack(Vector2 pos) {
+        System.out.println(pos);
         MazeCell current_cell = cell_array[pos.x][pos.y];
         visited_cell_ids.add(current_cell.cell_id);
 
-        List<Vector2> neighbour_positions = get_valid_neighbours(pos);
+        List<Vector2> neighbour_positions = get_neighbours(pos);
+        Collections.shuffle(neighbour_positions);
         for (Vector2 v : neighbour_positions) {
             if (!is_valid_neighbour(v)) {
                 continue;
             }
-            // remove wall between
+
+
+            // remove wall
+            Vector2 vec_direction = Vector2.sub(v, pos);
+            WallDirection wall_to_remove = get_dir(vec_direction);
+            remove_wall(pos, wall_to_remove);
+
+
             recursive_backtrack(v);
         }
     }
 
-    private List<Vector2> get_valid_neighbours(Vector2 pos) {
-        MazeCell current_cell = cell_array[pos.x][pos.y];
+    private List<Vector2> get_neighbours(Vector2 pos) {
         List<Vector2> cell_positions = new ArrayList<>();
 
-        int i, j;
-        for (i=-1; i<=2; i+=2) {
-            for (j=-1; j<=2; j+=2) {
-                if (!is_valid_neighbour(pos)) {
-                    continue;
-                }
-                cell_positions.add(new Vector2(i, j));
-            }
+        for (Vector2 v: Vector2.CARDINALS) {
+            cell_positions.add(Vector2.add(pos, v));
         }
 
         return cell_positions;
     }
 
     private boolean is_valid_neighbour(Vector2 pos) {
-        MazeCell current_cell = cell_array[pos.x][pos.y];
         // check within bounds
-        if (pos.x<0 || pos.x>width || pos.y<0 || pos.y>height) {
+        if (pos.x<0 || pos.x>=width || pos.y<0 || pos.y>=height) {
             return false;
         }
         // check already visited
+        MazeCell current_cell = cell_array[pos.x][pos.y];
         if (visited_cell_ids.contains(current_cell.cell_id)) {
             return false;
         }
@@ -89,5 +93,21 @@ public class MazeGenerator {
                 cell_array[pos.x-1][pos.y].east_wall = false;
                 break;
         }
+    }
+
+    private WallDirection get_dir(Vector2 v) {
+        if (v.equals(Vector2.NORTH)) {
+            return WallDirection.NORTH;
+        }
+        if (v.equals(Vector2.SOUTH)) {
+            return WallDirection.SOUTH;
+        }
+        if (v.equals(Vector2.WEST)) {
+            return WallDirection.WEST;
+        }
+        if (v.equals(Vector2.EAST)) {
+            return WallDirection.EAST;
+        }
+        return WallDirection.NORTH;
     }
 }

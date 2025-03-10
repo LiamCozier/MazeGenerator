@@ -5,7 +5,11 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class World {
 
+    Maze maze;
+
     World() {
+        maze = new Maze(5 ,5);
+        maze.print();
     }
 
     public void draw_screen(ShapeRenderer sr) {
