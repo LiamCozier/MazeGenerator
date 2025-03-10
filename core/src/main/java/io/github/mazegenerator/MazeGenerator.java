@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class MazeGenerator {
+public class  MazeGenerator {
     private final int width;
     private final int height;
     public MazeCell[][] cell_array;
@@ -33,7 +33,6 @@ public class MazeGenerator {
     }
 
     public void recursive_backtrack(Vector2 pos) {
-        System.out.println(pos);
         MazeCell current_cell = cell_array[pos.x][pos.y];
         visited_cell_ids.add(current_cell.cell_id);
 
@@ -108,6 +107,7 @@ public class MazeGenerator {
         if (v.equals(Vector2.EAST)) {
             return WallDirection.EAST;
         }
+        System.out.println("ERROR");
         return WallDirection.NORTH;
     }
 }

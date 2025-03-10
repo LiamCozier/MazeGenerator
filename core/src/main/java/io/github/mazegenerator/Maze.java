@@ -22,13 +22,16 @@ public class Maze {
         return mg.cell_array;
     }
 
+    public MazeCell[][] get_cell_array() {
+        return this.cell_array;
+    }
+
     public void print() {
         for (MazeCell[] i: cell_array) {
-            System.out.print("\n|");
             for (MazeCell j: i) {
-                System.out.print((j.south_wall ? "_" : " "));
-                System.out.print((j.east_wall ? "|" : " "));
+                System.out.printf("<%b, %b> ", j.east_wall, j.south_wall);
             }
+            System.out.println();
         }
     }
 
