@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Maze {
-    private final int width;
-    private final int height;
+    public final int width;
+    public final int height;
     private MazeCell[][] cell_array;
 
     public Maze(int width, int height) {

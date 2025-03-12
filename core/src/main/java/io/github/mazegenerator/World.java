@@ -5,33 +5,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class World {
-
     Maze maze;
+    MazeRenderer mr;
 
-    World() {
+    public World() {
         maze = new Maze(10 ,10);
+        mr = new MazeRenderer(50, 50, 10);
     }
 
     public void draw_screen(ShapeRenderer sr) {
-        ScreenUtils.clear(.1f, .1f, .1f, 1f);
+        ScreenUtils.clear(1f, 1f, 1f, 1f);
 
-        sr.begin(ShapeRenderer.ShapeType.Filled);
-        MazeCell[][] cells = maze.get_cell_array();
-        for (int i=0; i<cells.length; i++) {
-            for (int j=0; j<cells[0].length; j++) {
-                sr.setColor(Color.WHITE);
-                sr.rect(50*i, 50*j, 50, 50);
+        mr.render(maze, sr);
 
-                sr.setColor(Color.BLACK);
-                if(cells[i][j].east_wall) {
-                    sr.rect(50*i+40, 50*j, 10, 50);
-                }
-                if(cells[i][j].south_wall) {
-                    sr.rect(50*i, 50*j, 50, 10);
-                }
-            }
-        }
-        sr.end();
     }
 
 
